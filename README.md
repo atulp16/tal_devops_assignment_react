@@ -10,6 +10,42 @@ A full-stack task management application built with React.js frontend and Node.j
 - Database: PostgreSQL
 - Authentication: JWT
 
+## Project Structure
+```
+.
+├── frontend/         # React.js frontend application
+├── backend/         # Node.js backend application
+└── k8s/            # Kubernetes configuration files
+```
+
+## Prerequisites
+- Node.js 18.x or later
+- Docker
+- kubectl
+- AWS CLI
+- eksctl
+
+## Local Development
+1. Frontend:
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+
+2. Backend:
+   ```bash
+   cd backend
+   npm install
+   npm start
+   ```
+
+## Deployment
+The application is configured to be deployed on Amazon EKS. Refer to the deployment documentation in the k8s directory for detailed instructions.
+
+## Database
+The application uses Amazon RDS (PostgreSQL) as the database. Connection details should be configured through environment variables.
+
 ### Minimum Tasks (Infra Creation)
 - Provision infrastructure either on self managed K8s / EKS using terraform 
 - Set up a simple GitHub Actions or Jenkins pipeline to run Terraform commands (terraform fmt, validate, and plan).
