@@ -52,6 +52,7 @@ The application uses Amazon RDS (PostgreSQL) as the database. Connection details
 - Automate Terraform execution with a pipeline trigger on push to a specific branch.
 - Create Dockerfiles 
 - Set up multi-stage builds
+- push docker file to docker repository
 - Configure environment variables
 - Set up health check endpoints
 - Configure basic logging
