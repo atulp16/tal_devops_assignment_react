@@ -1,0 +1,48 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: atul_pandey
+      POSTGRES_PASSWORD: atul123
+      POSTGRES_DB: task_manager
+    ports:
+      - 5432:5432
+    networks:
+      - my_network    
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    env_file:
+      - ./backend/src/.env  # Load environment variables for backend
+    ports:
+      - 3001:3001
+    networks:
+      - my_network        
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+    networks:
+      - my_network        
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+
+volumes:
+  postgres_data:
+
+networks:
+  my_network:
+    driver: bridge
