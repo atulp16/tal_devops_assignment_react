@@ -21,7 +21,6 @@ import {
   InputLabel
 } from '@mui/material';
 
-//const API_URL = process.env.REACT_APP_API_URL || 'http://a1a7da59766e24494b15f9fbc691e14b-51231813.us-east-1.elb.amazonaws.com:3001';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
 function App() {
