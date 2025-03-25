@@ -10,6 +10,16 @@ locals {
   }
 }
 
+terraform {
+  backend "s3" {
+    bucket         = "task-management-terraform-state-atul"
+    key            = "terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-lock-table-atul"
+    encrypt        = true
+  }
+}
+
 # 1. VPC Module (created first)
 module "vpc" {
   source               = "./modules/vpc"
