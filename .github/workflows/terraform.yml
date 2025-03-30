@@ -23,6 +23,8 @@ jobs:
           role-to-assume: arn:aws:iam::590184134827:role/atul-oidc
           aws-region: us-east-1
 
+      - name: Change to Terraform directory
+        run: cd terraform_code
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
 
