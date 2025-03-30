@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: "Terraform Command to Run"
+        description: "Terraform Command to Execute"
         required: true
         default: "plan"
         type: choice
