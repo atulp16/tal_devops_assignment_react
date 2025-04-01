@@ -1,10 +1,6 @@
 name: Terraform CI/CD
 
 on:
-  push:
-    branches:
-      - kra-atul  # Runs automatically when code is pushed to kra-atul branch
-
   workflow_dispatch:
     inputs:
       command:
@@ -13,9 +9,11 @@ on:
         default: "plan"
         type: choice
         options:
+          - init
           - fmt
           - validate
           - plan
+          - destroy
 
 permissions:
   id-token: write  # Needed for OIDC authentication
@@ -38,19 +36,8 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Init
-        run: terraform init
-        working-directory: terraform_code
-
-      - name: Determine Terraform Command
+      - name: Run Terraform Command
         run: |
-          if [[ -z "${{ github.event.inputs.command }}" ]]; then
-            echo "Running automatic Terraform Plan..."
-            terraform fmt -check
-            terraform validate
-            terraform plan -out=tfplan
-          else
-            echo "Running selected Terraform command: ${{ github.event.inputs.command }}"
-            terraform ${{ github.event.inputs.command }}
-          fi
+          echo "Running Terraform command: ${{ github.event.inputs.command }}"
+          terraform ${{ github.event.inputs.command }}
         working-directory: terraform_code
