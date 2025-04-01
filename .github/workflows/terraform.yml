@@ -41,8 +41,15 @@ jobs:
         run: terraform init
         working-directory: terraform_code
 
+      - name: Check Directory Structure
+        run: |
+          echo "Listing contents of current directory"
+          ls -R terraform_code
+
       - name: Verify Terraform Providers
-        run: ls -R terraform_code/.terraform  # This will help ensure plugins are installed
+        run: |
+          echo "Checking .terraform directory"
+          ls -R terraform_code/.terraform  # This will help ensure plugins are installed
         working-directory: terraform_code
 
       - name: Run Terraform Command
@@ -50,3 +57,4 @@ jobs:
           echo "Running Terraform command: ${{ github.event.inputs.command }}"
           terraform ${{ github.event.inputs.command }}
         working-directory: terraform_code
+
