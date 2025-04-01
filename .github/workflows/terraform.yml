@@ -18,11 +18,11 @@ on:
           - validate
           - plan
           - apply
-          - destroy  
+          - destroy
 
 permissions:
-  id-token: write  # Needed for OIDC authentication
-  contents: read   # Allows reading repo contents
+  id-token: write
+  contents: read
 
 jobs:
   terraform:
@@ -32,6 +32,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Debug: List Directory After Checkout
+        run: |
+          echo "Current Directory Structure:"
+          ls -R
+
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -40,6 +45,13 @@ jobs:
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Debug: Confirm terraform_code Exists
+        run: |
+          if [ ! -d "terraform_code" ]; then
+            echo "Error: terraform_code directory is missing!"
+            exit 1
+          fi
 
       - name: Initialize Terraform
         run: |
