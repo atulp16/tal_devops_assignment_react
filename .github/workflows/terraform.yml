@@ -13,7 +13,7 @@ on:
           - fmt
           - validate
           - plan
-          - apply  
+          - apply
           - destroy
 
 permissions:
@@ -36,6 +36,14 @@ jobs:
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: terraform_code
+
+      - name: Verify Terraform Providers
+        run: ls -R terraform_code/.terraform  # This will help ensure plugins are installed
+        working-directory: terraform_code
 
       - name: Run Terraform Command
         run: |
