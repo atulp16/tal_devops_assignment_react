@@ -1,6 +1,12 @@
 name: Terraform CI/CD
 
+
 on:
+
+  push:
+    branches:
+      - kra-atul  # Runs automatically when code is pushed to kra-atul branch  
+
   workflow_dispatch:
     inputs:
       command:
@@ -14,7 +20,6 @@ on:
           - validate
           - plan
           - apply
-          - destroy
 
 permissions:
   id-token: write  # Needed for OIDC authentication
