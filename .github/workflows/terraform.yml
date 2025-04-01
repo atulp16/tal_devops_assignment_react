@@ -1,11 +1,9 @@
 name: Terraform CI/CD
 
-
 on:
-
   push:
     branches:
-      - kra-atul  # Runs automatically when code is pushed to kra-atul branch  
+      - kra-atul  # Runs on push to kra-atul branch  
 
   workflow_dispatch:
     inputs:
@@ -20,6 +18,7 @@ on:
           - validate
           - plan
           - apply
+          - destroy  
 
 permissions:
   id-token: write  # Needed for OIDC authentication
@@ -45,18 +44,25 @@ jobs:
       - name: Initialize Terraform
         run: |
           cd terraform_code
-          terraform init
-          ls -alh .terraform
+          terraform init || { echo "Terraform init failed"; exit 1; }
+          ls -alh .terraform || echo "No .terraform directory created!"
+        working-directory: terraform_code
 
       - name: Check Directory Structure
         run: |
-          echo "Listing contents of current directory"
+          echo "Listing contents of terraform_code"
           ls -R terraform_code
+        working-directory: terraform_code
 
       - name: Verify Terraform Providers
         run: |
           echo "Checking .terraform directory"
-          ls -R terraform_code/.terraform  # This will help ensure plugins are installed
+          if [ -d ".terraform" ]; then
+            ls -R .terraform
+          else
+            echo "Error: .terraform directory not found!"
+            exit 1
+          fi
         working-directory: terraform_code
 
       - name: Run Terraform Command
