@@ -43,8 +43,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
-        run: terraform init
-        working-directory: terraform_code
+        run: |
+          cd terraform_code
+          terraform init
+          ls -alh .terraform
 
       - name: Check Directory Structure
         run: |
