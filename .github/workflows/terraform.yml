@@ -32,11 +32,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-
       - name: Debug: List Directory After Checkout
         run: |
           echo "Current Directory Structure:"
-          ls -R          
+          ls -R
 
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
@@ -55,19 +54,19 @@ jobs:
           fi
 
       - name: Initialize Terraform
+        working-directory: terraform_code
         run: |
-          cd terraform_code
           terraform init || { echo "Terraform init failed"; exit 1; }
           ls -alh .terraform || echo "No .terraform directory created!"
-        working-directory: terraform_code
 
       - name: Check Directory Structure
+        working-directory: terraform_code
         run: |
           echo "Listing contents of terraform_code"
-          ls -R terraform_code
-        working-directory: terraform_code
+          ls -R
 
       - name: Verify Terraform Providers
+        working-directory: terraform_code
         run: |
           echo "Checking .terraform directory"
           if [ -d ".terraform" ]; then
@@ -76,11 +75,9 @@ jobs:
             echo "Error: .terraform directory not found!"
             exit 1
           fi
-        working-directory: terraform_code
 
       - name: Run Terraform Command
+        working-directory: terraform_code
         run: |
           echo "Running Terraform command: ${{ github.event.inputs.command }}"
           terraform ${{ github.event.inputs.command }}
-        working-directory: terraform_code
-
