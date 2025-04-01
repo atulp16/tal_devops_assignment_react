@@ -1,6 +1,11 @@
 name: Terraform CI/CD
 
 on:
+
+  push:
+    branches:
+      - kra-atul  # Runs on push to kra-atul branch   
+
   workflow_dispatch:
     inputs:
       command:
