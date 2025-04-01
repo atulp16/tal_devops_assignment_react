@@ -1,10 +1,6 @@
 name: Terraform CI/CD
 
 on:
-  push:
-    branches:
-      - kra-atul  # Runs on push to kra-atul branch  
-
   workflow_dispatch:
     inputs:
       command:
@@ -21,8 +17,8 @@ on:
           - destroy
 
 permissions:
-  id-token: write
-  contents: read
+  id-token: write  # Needed for OIDC authentication
+  contents: read   # Allows reading repo contents
 
 jobs:
   terraform:
@@ -31,11 +27,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Debug: List Directory After Checkout
-        run: |
-          echo "Current Directory Structure:"
-          ls -R
 
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
@@ -46,38 +37,12 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Debug: Confirm terraform_code Exists
-        run: |
-          if [ ! -d "terraform_code" ]; then
-            echo "Error: terraform_code directory is missing!"
-            exit 1
-          fi
-
       - name: Initialize Terraform
+        run: terraform init
         working-directory: terraform_code
-        run: |
-          terraform init || { echo "Terraform init failed"; exit 1; }
-          ls -alh .terraform || echo "No .terraform directory created!"
-
-      - name: Check Directory Structure
-        working-directory: terraform_code
-        run: |
-          echo "Listing contents of terraform_code"
-          ls -R
-
-      - name: Verify Terraform Providers
-        working-directory: terraform_code
-        run: |
-          echo "Checking .terraform directory"
-          if [ -d ".terraform" ]; then
-            ls -R .terraform
-          else
-            echo "Error: .terraform directory not found!"
-            exit 1
-          fi
 
       - name: Run Terraform Command
-        working-directory: terraform_code
         run: |
           echo "Running Terraform command: ${{ github.event.inputs.command }}"
           terraform ${{ github.event.inputs.command }}
+        working-directory: terraform_code
