@@ -20,4 +20,4 @@ spec:
             - containerPort: {{ .Values.service.frontend.port }}
           env:
             - name: REACT_APP_API_URL
-              value: "http://backend-service:{{ .Values.service.backend.port }}"
+              value: "http://localhost:{{ .Values.service.backend.port }}"
