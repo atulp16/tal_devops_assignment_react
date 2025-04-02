@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  backend: atul1695/backend:latest
+  frontend: atul1695/frontend:latest
+  database: postgres:latest
+
+service:
+  backend:
+    port: 3001
+  frontend:
+    port: 80
+  database:
+    port: 5432
+
+database:
+  user: atul_pandey
+  password: atul123
+  name: atul_pandey
